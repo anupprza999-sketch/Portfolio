@@ -1,27 +1,23 @@
 import express from 'express'
 import cors from 'cors'
-import dotenv from 'dotenv'
-
-dotenv.config()
+import { env } from './config/env.js'
+import apiRouter from './routes/index.js'
+import { errorHandler } from './middleware/errorHandler.js'
 
 const app = express()
-const port = process.env.PORT || 3001
+const port = env.PORT
 
-app.use(cors({ origin: process.env.FRONTEND_ORIGIN || 'http://localhost:5173' }))
+app.use(cors({ origin: env.FRONTEND_ORIGIN }))
 app.use(express.json())
 
-app.get('/api/health', (_req, res) => {
-  res.status(200).json({
-    status: 'ok',
-    timestamp: new Date().toISOString(),
-    uptime: process.uptime()
-  })
-})
+app.use('/api', apiRouter)
+app.use(errorHandler)
 
 export default app
 
-if (process.env.NODE_ENV !== 'test') {
+if (env.NODE_ENV !== 'test') {
   app.listen(port, () => {
     console.log(`Backend server running on http://localhost:${port}`)
   })
 }
+
