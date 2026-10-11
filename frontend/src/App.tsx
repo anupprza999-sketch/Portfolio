@@ -1,6 +1,7 @@
 import { FC } from 'react'
 import { Navigation } from './components/Navigation'
 import { Section } from './components/Section'
+import { HeroCanvas } from './scenes/HeroCanvas'
 
 const App: FC = () => {
   return (
@@ -8,42 +9,51 @@ const App: FC = () => {
       <Navigation activeSection="hero" />
 
       <main className="flex-1 pt-16">
-        {/* Hero Section Placeholder for Phase 5 3D Scene */}
+        {/* Hero Section with Interactive 3D Real-time Scene */}
         <section
           id="hero"
-          className="relative min-h-[90vh] flex flex-col justify-center items-center text-center px-6"
+          className="relative min-h-[92vh] flex items-center px-6 max-w-7xl mx-auto overflow-hidden"
         >
-          <div className="max-w-3xl space-y-6 z-10">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium bg-[#141418] text-[#c8a45c] border border-[#242429]">
-              <span className="w-2 h-2 rounded-full bg-[#c8a45c] animate-pulse"></span>
-              3D Artist & Environment Specialist
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center w-full py-12">
+            {/* Left Content Column */}
+            <div className="lg:col-span-7 space-y-6 z-10 text-left">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium bg-[#141418] text-[#c8a45c] border border-[#242429]">
+                <span className="w-2 h-2 rounded-full bg-[#c8a45c] animate-pulse"></span>
+                3D Artist & Environment Specialist
+              </div>
+
+              <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight text-white leading-tight">
+                Anup Prajapati
+              </h1>
+
+              <p className="text-xl sm:text-2xl text-neutral-400 font-light max-w-xl">
+                Unreal Engine Environment Design, Atmospheric Lighting & Architectural Reconstruction
+              </p>
+
+              <p className="text-sm text-neutral-500 max-w-lg leading-relaxed">
+                Crafting photorealistic environments and stylized worlds with emphasis on mood, dynamic lighting, and architectural storytelling.
+              </p>
+
+              <div className="pt-4 flex flex-wrap items-center gap-4">
+                <a
+                  href="#work"
+                  className="px-6 py-3 rounded text-sm font-medium bg-white text-black hover:bg-neutral-200 transition-colors"
+                >
+                  View Selected Work
+                </a>
+                <a
+                  href="#contact"
+                  className="px-6 py-3 rounded text-sm font-medium bg-[#141418] text-neutral-300 border border-[#242429] hover:text-white hover:border-neutral-600 transition-colors"
+                >
+                  Get in Touch
+                </a>
+              </div>
             </div>
 
-            <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-white leading-tight">
-              Anup Prajapati
-            </h1>
-
-            <p className="text-xl md:text-2xl text-neutral-400 font-light max-w-2xl mx-auto">
-              Unreal Engine Environment Design, Atmospheric Lighting & Architectural Reconstruction
-            </p>
-
-            <p className="text-sm text-neutral-500 max-w-xl mx-auto leading-relaxed">
-              Crafting photorealistic environments and stylized worlds with emphasis on mood, dynamic lighting, and architectural storytelling.
-            </p>
-
-            <div className="pt-6 flex flex-wrap items-center justify-center gap-4">
-              <a
-                href="#work"
-                className="px-6 py-3 rounded text-sm font-medium bg-white text-black hover:bg-neutral-200 transition-colors"
-              >
-                View Selected Work
-              </a>
-              <a
-                href="#contact"
-                className="px-6 py-3 rounded text-sm font-medium bg-[#141418] text-neutral-300 border border-[#242429] hover:text-white hover:border-neutral-600 transition-colors"
-              >
-                Get in Touch
-              </a>
+            {/* Right 3D Viewport Column */}
+            <div className="lg:col-span-5 h-[420px] sm:h-[500px] lg:h-[600px] w-full flex items-center justify-center relative">
+              <div className="absolute inset-0 bg-radial from-[#1e1e28]/20 to-transparent pointer-events-none rounded-full blur-2xl"></div>
+              <HeroCanvas />
             </div>
           </div>
         </section>
