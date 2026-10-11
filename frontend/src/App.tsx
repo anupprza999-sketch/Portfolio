@@ -1,11 +1,15 @@
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import { Navigation } from './components/Navigation'
 import { Section } from './components/Section'
 import { HeroCanvas } from './scenes/HeroCanvas'
 import { useScrollAnimation } from './hooks/useScrollAnimation'
+import { PORTFOLIO_PROJECTS, ProjectData } from './data/projects'
+import { ProjectCard } from './components/ProjectCard'
+import { ProjectModal } from './components/ProjectModal'
 
 const App: FC = () => {
   const { containerRef } = useScrollAnimation()
+  const [selectedProject, setSelectedProject] = useState<ProjectData | null>(null)
 
   return (
     <div
@@ -64,68 +68,16 @@ const App: FC = () => {
           </div>
         </section>
 
-        {/* Selected Work Foundation */}
+        {/* Selected Work Gallery */}
         <Section id="work" title="Selected Works" subtitle="Portfolio Exhibition">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="p-6 rounded-lg bg-[#141418] border border-[#242429] hover:border-neutral-600 transition-all">
-              <div className="h-44 rounded bg-[#1c1c24] flex items-center justify-center mb-5 text-neutral-600 text-xs tracking-wider uppercase">
-                3D Scene Viewport
-              </div>
-              <p className="text-xs text-[#c8a45c] font-medium uppercase tracking-wider mb-1">
-                Environment Art
-              </p>
-              <h3 className="text-lg font-semibold text-white mb-2">
-                Japanese Shrine Environment
-              </h3>
-              <p className="text-xs text-neutral-400 leading-relaxed mb-4">
-                Stylized Japanese shrine environment with custom lighting, atmospheric mood, and composition in Unreal Engine.
-              </p>
-              <div className="flex gap-2 text-[10px] text-neutral-500 font-mono">
-                <span>Blender</span>
-                <span>•</span>
-                <span>Unreal Engine</span>
-              </div>
-            </div>
-
-            <div className="p-6 rounded-lg bg-[#141418] border border-[#242429] hover:border-neutral-600 transition-all">
-              <div className="h-44 rounded bg-[#1c1c24] flex items-center justify-center mb-5 text-neutral-600 text-xs tracking-wider uppercase">
-                3D Reconstruction Viewport
-              </div>
-              <p className="text-xs text-[#c8a45c] font-medium uppercase tracking-wider mb-1">
-                Architectural Heritage
-              </p>
-              <h3 className="text-lg font-semibold text-white mb-2">
-                Basantapur Temple 3D Reconstruction
-              </h3>
-              <p className="text-xs text-neutral-400 leading-relaxed mb-4">
-                Detailed 3D heritage reconstruction of historic Nepalese temples with intricate carvings, architectural accuracy, and cinematic lighting.
-              </p>
-              <div className="flex gap-2 text-[10px] text-neutral-500 font-mono">
-                <span>Maya</span>
-                <span>•</span>
-                <span>Unreal Engine</span>
-              </div>
-            </div>
-
-            <div className="p-6 rounded-lg bg-[#141418] border border-[#242429] hover:border-neutral-600 transition-all">
-              <div className="h-44 rounded bg-[#1c1c24] flex items-center justify-center mb-5 text-neutral-600 text-xs tracking-wider uppercase">
-                ArchViz Viewport
-              </div>
-              <p className="text-xs text-[#c8a45c] font-medium uppercase tracking-wider mb-1">
-                Interior Lighting
-              </p>
-              <h3 className="text-lg font-semibold text-white mb-2">
-                Interior Room Designs
-              </h3>
-              <p className="text-xs text-neutral-400 leading-relaxed mb-4">
-                High-fidelity interior spaces exploring natural and moody artificial lighting setups with photorealistic material response.
-              </p>
-              <div className="flex gap-2 text-[10px] text-neutral-500 font-mono">
-                <span>Blender</span>
-                <span>•</span>
-                <span>Unreal Engine</span>
-              </div>
-            </div>
+            {PORTFOLIO_PROJECTS.map((project) => (
+              <ProjectCard
+                key={project.id}
+                project={project}
+                onSelect={(p) => setSelectedProject(p)}
+              />
+            ))}
           </div>
         </Section>
 
@@ -191,8 +143,15 @@ const App: FC = () => {
       <footer className="py-8 px-6 border-t border-[#1a1a22] text-center text-xs text-neutral-500">
         <p>© 2026 Anup Prajapati. 3D Artist & Environment Designer. All rights reserved.</p>
       </footer>
+
+      {/* Detail Modal */}
+      <ProjectModal
+        project={selectedProject}
+        onClose={() => setSelectedProject(null)}
+      />
     </div>
   )
 }
 
 export default App
+
