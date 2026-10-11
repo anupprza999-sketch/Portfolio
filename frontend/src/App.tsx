@@ -6,6 +6,7 @@ import { useScrollAnimation } from './hooks/useScrollAnimation'
 import { PORTFOLIO_PROJECTS, ProjectData } from './data/projects'
 import { ProjectCard } from './components/ProjectCard'
 import { ProjectModal } from './components/ProjectModal'
+import { ContactForm } from './components/ContactForm'
 
 const App: FC = () => {
   const { containerRef } = useScrollAnimation()
@@ -81,23 +82,81 @@ const App: FC = () => {
           </div>
         </Section>
 
-        {/* About Section */}
+        {/* About & Verified Career Profile */}
         <Section id="about" title="About & Background" subtitle="Creative Profile">
-          <div className="max-w-3xl space-y-4 text-neutral-300 text-base leading-relaxed">
-            <p>
-              I am a 3D artist and environment designer based in Bhaktapur, Nepal, with a strong focus on Unreal Engine scene creation, dynamic lighting, and architectural reconstruction.
-            </p>
-            <p className="text-neutral-400 text-sm">
-              With experience at Gamenic Virtual Studio, I specialize in building immersive interior and exterior environments, lighting setups, 3D asset modeling in Blender and Maya, and visual storytelling.
-            </p>
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 text-neutral-300">
+            <div className="md:col-span-7 space-y-4 text-base leading-relaxed">
+              <p>
+                I am a 3D artist and environment designer based in Bhaktapur, Nepal, specializing in Unreal Engine environment design, lighting, and architectural reconstruction.
+              </p>
+              <p className="text-neutral-400 text-sm">
+                Passionate about crafting immersive and realistic scenes with a strong focus on composition, color palettes, and dynamic atmospheric lighting.
+              </p>
+            </div>
+            <div className="md:col-span-5 p-6 rounded-xl bg-[#141418] border border-[#242429] space-y-3">
+              <h4 className="text-xs uppercase tracking-widest text-[#c8a45c] font-semibold">
+                Location & Details
+              </h4>
+              <p className="text-xs text-neutral-400">
+                <span className="text-white font-medium">Location:</span> Madhapur Thimi-5, Bhaktapur, Nepal
+              </p>
+              <p className="text-xs text-neutral-400">
+                <span className="text-white font-medium">Email:</span> Anupprza999@gmail.com
+              </p>
+              <p className="text-xs text-neutral-400">
+                <span className="text-white font-medium">Phone:</span> +977 9863855425
+              </p>
+            </div>
           </div>
         </Section>
 
-        {/* Skills Section */}
+        {/* Professional Experience & Education */}
+        <Section id="experience" title="Experience & Education" subtitle="Career History">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Experience */}
+            <div className="p-6 rounded-xl bg-[#141418] border border-[#242429] space-y-4">
+              <p className="text-xs uppercase tracking-widest text-[#c8a45c] font-semibold">
+                Work Experience
+              </p>
+              <div>
+                <h4 className="text-base font-bold text-white">Gamenic Virtual Studio</h4>
+                <p className="text-xs text-[#c8a45c] font-medium mb-3">3D Artist</p>
+                <ul className="space-y-2 text-xs text-neutral-400 list-disc list-inside">
+                  <li>Created 3D models for various projects using Blender</li>
+                  <li>Designed and developed interior spaces and rooms in Blender and Unreal Engine</li>
+                  <li>Built immersive environments and implemented realistic lighting setups in Unreal Engine</li>
+                  <li>Edited and produced videos using Adobe After Effects and Premiere Pro</li>
+                  <li>Generated visual assets and concepts using Midjourney and Runway</li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Education */}
+            <div className="p-6 rounded-xl bg-[#141418] border border-[#242429] space-y-4">
+              <p className="text-xs uppercase tracking-widest text-[#c8a45c] font-semibold">
+                Education & Credentials
+              </p>
+              <div className="space-y-4">
+                <div className="border-b border-[#202029] pb-3">
+                  <h4 className="text-sm font-semibold text-white">Diploma in VFX and Animation</h4>
+                  <p className="text-xs text-[#c8a45c]">Maya Animation Academy</p>
+                  <p className="text-[11px] text-neutral-500 font-mono mt-0.5">Joined: 2077 B.S.</p>
+                </div>
+                <div>
+                  <h4 className="text-sm font-semibold text-white">+2 (High School)</h4>
+                  <p className="text-xs text-[#c8a45c]">Supreme College Bhaktapur</p>
+                  <p className="text-[11px] text-neutral-500 font-mono mt-0.5">Management • Passed: 2020</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Section>
+
+        {/* Technical Skills */}
         <Section id="skills" title="Technical Toolset" subtitle="Proficiencies">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
             {[
-              { name: 'Unreal Engine', desc: 'Environment design, lighting setups' },
+              { name: 'Unreal Engine', desc: 'Environment design, lighting' },
               { name: 'Autodesk Maya', desc: '3D modeling & asset creation' },
               { name: 'Blender', desc: 'Scene composition & interiors' },
               { name: 'Adobe Premiere Pro', desc: 'Cinematic video editing' },
@@ -106,7 +165,7 @@ const App: FC = () => {
               { name: 'Figma', desc: 'Visual design & layouts' },
               { name: 'Lighting & Shading', desc: 'Atmosphere, mood, photorealism' }
             ].map((skill) => (
-              <div key={skill.name} className="p-4 rounded bg-[#141418] border border-[#242429]">
+              <div key={skill.name} className="p-4 rounded-xl bg-[#141418] border border-[#242429]">
                 <h4 className="text-sm font-semibold text-white mb-1">{skill.name}</h4>
                 <p className="text-xs text-neutral-500">{skill.desc}</p>
               </div>
@@ -114,27 +173,31 @@ const App: FC = () => {
           </div>
         </Section>
 
-        {/* Contact Section */}
-        <Section id="contact" title="Get in Touch" subtitle="Collaboration">
-          <div className="max-w-xl space-y-6">
-            <p className="text-sm text-neutral-400">
-              Open to environment art opportunities, architectural visualization, and collaborative creative projects.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 pt-2">
-              <a
-                href="mailto:Anupprza999@gmail.com"
-                className="px-5 py-3 rounded bg-white text-black text-xs font-semibold tracking-wide uppercase hover:bg-neutral-200 transition-colors text-center"
-              >
-                Send Email
-              </a>
-              <a
-                href="https://www.linkedin.com/in/anup-prajapati-a75878242"
-                target="_blank"
-                rel="noreferrer"
-                className="px-5 py-3 rounded bg-[#141418] border border-[#242429] text-neutral-300 text-xs font-semibold tracking-wide uppercase hover:border-neutral-500 hover:text-white transition-colors text-center"
-              >
-                LinkedIn Profile
-              </a>
+        {/* Contact Section with Active Form */}
+        <Section id="contact" title="Get in Touch" subtitle="Collaboration & Inquiries">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <div className="lg:col-span-5 space-y-4">
+              <p className="text-sm text-neutral-400 leading-relaxed">
+                Available for freelance environment design, architectural 3D reconstruction, and lighting contracts.
+              </p>
+              <div className="pt-2 space-y-2 text-xs text-neutral-400 font-mono">
+                <p>Email: Anupprza999@gmail.com</p>
+                <p>Location: Bhaktapur, Nepal</p>
+              </div>
+              <div className="pt-4">
+                <a
+                  href="https://www.linkedin.com/in/anup-prajapati-a75878242"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-block px-4 py-2.5 rounded bg-[#181820] border border-[#2b2b36] text-neutral-300 text-xs font-medium hover:border-[#c8a45c] hover:text-white transition-colors"
+                >
+                  View LinkedIn Profile ↗
+                </a>
+              </div>
+            </div>
+
+            <div className="lg:col-span-7">
+              <ContactForm />
             </div>
           </div>
         </Section>
