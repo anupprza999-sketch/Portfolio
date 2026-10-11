@@ -1,14 +1,36 @@
 import { useRef } from 'react'
-import { useFrame } from '@react-three/fiber'
+import { useFrame, useThree } from '@react-three/fiber'
 import { Float } from '@react-three/drei'
 import * as THREE from 'three'
 
-export function HeroEnvironment() {
+interface HeroEnvironmentProps {
+  pointer: { x: number; y: number }
+}
+
+export function HeroEnvironment({ pointer }: HeroEnvironmentProps) {
+  const groupRef = useRef<THREE.Group>(null)
   const outerRingRef = useRef<THREE.Group>(null)
   const innerCoreRef = useRef<THREE.Mesh>(null)
   const columnsGroupRef = useRef<THREE.Group>(null)
+  const { camera } = useThree()
 
   useFrame((_, delta) => {
+    // Smooth frame-based mouse parallax interpolation (damping)
+    const targetCamX = pointer.x * 0.8
+    const targetCamY = 0.5 + pointer.y * 0.5
+    camera.position.x = THREE.MathUtils.lerp(camera.position.x, targetCamX, 0.05)
+    camera.position.y = THREE.MathUtils.lerp(camera.position.y, targetCamY, 0.05)
+    camera.lookAt(0, 0, 0)
+
+    // Subtle responsive group tilt based on mouse
+    if (groupRef.current) {
+      const targetRotX = pointer.y * 0.2
+      const targetRotY = pointer.x * 0.3
+      groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, targetRotX, 0.05)
+      groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, targetRotY, 0.05)
+    }
+
+    // Continuous architectural ambient motion
     if (outerRingRef.current) {
       outerRingRef.current.rotation.y += delta * 0.15
       outerRingRef.current.rotation.x += delta * 0.05
@@ -23,10 +45,10 @@ export function HeroEnvironment() {
   })
 
   return (
-    <group position={[0, -0.2, 0]}>
-      {/* Floating Hero Object */}
+    <group ref={groupRef} position={[0, -0.2, 0]}>
+      {/* Floating Hero Composition */}
       <Float speed={1.8} rotationIntensity={0.6} floatIntensity={0.8}>
-        {/* Core Monolith / Gem */}
+        {/* Core Monolith */}
         <mesh ref={innerCoreRef} castShadow receiveShadow>
           <octahedronGeometry args={[1.1, 0]} />
           <meshStandardMaterial
@@ -58,10 +80,10 @@ export function HeroEnvironment() {
           </mesh>
         </group>
 
-        {/* Floating Architectural Pillars representing Environment Design */}
+        {/* Floating Architectural Pillars */}
         <group ref={columnsGroupRef}>
           {[-2.2, 2.2].map((x, i) => (
-            <mesh key={i} position={[x, (i === 0 ? 0.3 : -0.3), 0]} castShadow>
+            <mesh key={i} position={[x, i === 0 ? 0.3 : -0.3, 0]} castShadow>
               <boxGeometry args={[0.25, 1.8, 0.25]} />
               <meshStandardMaterial
                 color="#1e1e24"

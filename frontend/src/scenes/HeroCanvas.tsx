@@ -1,4 +1,4 @@
-import { Suspense, FC } from 'react'
+import { Suspense, FC, useState, useCallback, MouseEvent } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { PerspectiveCamera } from '@react-three/drei'
 import { HeroEnvironment } from './HeroEnvironment'
@@ -8,8 +8,29 @@ interface HeroCanvasProps {
 }
 
 export const HeroCanvas: FC<HeroCanvasProps> = ({ className = '' }) => {
+  const [pointer, setPointer] = useState<{ x: number; y: number }>({ x: 0, y: 0 })
+
+  // Normalized clamped pointer coordinates (-1 to 1) without creating GC pressure
+  const handleMouseMove = useCallback((e: MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    const x = ((e.clientX - rect.left) / rect.width) * 2 - 1
+    const y = -(((e.clientY - rect.top) / rect.height) * 2 - 1)
+    setPointer({
+      x: Math.max(-1, Math.min(1, x)),
+      y: Math.max(-1, Math.min(1, y))
+    })
+  }, [])
+
+  const handleMouseLeave = useCallback(() => {
+    setPointer({ x: 0, y: 0 })
+  }, [])
+
   return (
-    <div className={`relative w-full h-full min-h-[480px] ${className}`}>
+    <div
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className={`relative w-full h-full min-h-[480px] ${className}`}
+    >
       <Canvas
         shadows
         dpr={[1, 2]}
@@ -17,11 +38,9 @@ export const HeroCanvas: FC<HeroCanvasProps> = ({ className = '' }) => {
       >
         <PerspectiveCamera makeDefault position={[0, 0.5, 6.2]} fov={45} />
 
-        {/* Cinematic 3D Lighting Setup */}
-        {/* Soft Ambient Fill */}
+        {/* Ambient & Directional Lighting Setup */}
         <ambientLight intensity={0.4} color="#f0ede6" />
 
-        {/* Primary Key Light with Warm Golden Cast */}
         <directionalLight
           position={[5, 8, 5]}
           intensity={1.8}
@@ -32,18 +51,16 @@ export const HeroCanvas: FC<HeroCanvasProps> = ({ className = '' }) => {
           shadow-bias={-0.0001}
         />
 
-        {/* Cool Rim/Back Light for Edge Separation */}
         <directionalLight
           position={[-6, 4, -4]}
           intensity={1.2}
           color="#9ab3cf"
         />
 
-        {/* Accent Point Light on the Monolith */}
         <pointLight position={[0, -0.5, 2]} intensity={0.8} color="#c8a45c" />
 
         <Suspense fallback={null}>
-          <HeroEnvironment />
+          <HeroEnvironment pointer={pointer} />
         </Suspense>
       </Canvas>
     </div>

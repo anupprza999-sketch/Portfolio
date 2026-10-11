@@ -2,10 +2,16 @@ import { FC } from 'react'
 import { Navigation } from './components/Navigation'
 import { Section } from './components/Section'
 import { HeroCanvas } from './scenes/HeroCanvas'
+import { useScrollAnimation } from './hooks/useScrollAnimation'
 
 const App: FC = () => {
+  const { containerRef } = useScrollAnimation()
+
   return (
-    <div className="min-h-screen bg-[#0a0a0c] text-neutral-100 flex flex-col selection:bg-[#c8a45c]/20 selection:text-white">
+    <div
+      ref={containerRef}
+      className="min-h-screen bg-[#0a0a0c] text-neutral-100 flex flex-col selection:bg-[#c8a45c]/20 selection:text-white"
+    >
       <Navigation activeSection="hero" />
 
       <main className="flex-1 pt-16">
@@ -16,7 +22,7 @@ const App: FC = () => {
         >
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center w-full py-12">
             {/* Left Content Column */}
-            <div className="lg:col-span-7 space-y-6 z-10 text-left">
+            <div id="hero-content" className="lg:col-span-7 space-y-6 z-10 text-left">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium bg-[#141418] text-[#c8a45c] border border-[#242429]">
                 <span className="w-2 h-2 rounded-full bg-[#c8a45c] animate-pulse"></span>
                 3D Artist & Environment Specialist
