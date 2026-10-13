@@ -7,18 +7,15 @@ import { errorHandler } from './middleware/errorHandler.js'
 const app = express()
 const port = env.PORT
 
-import path from 'path'
-
-app.use(express.static(path.resolve(__dirname, '../../frontend/dist')));
+app.use(cors({ origin: env.FRONTEND_ORIGIN || '*' }))
 app.use(express.json())
 
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../../frontend/dist/index.html'))
-})
+app.use('/api', apiRouter)
+app.use(errorHandler)
 
 export default app
 
-if (env.NODE_ENV !== 'test') {
+if (env.NODE_ENV !== 'test' && !process.env.VERCEL) {
   app.listen(port, () => {
     console.log(`Backend server running on http://localhost:${port}`)
   })
