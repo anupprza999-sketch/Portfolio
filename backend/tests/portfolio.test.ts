@@ -7,14 +7,14 @@ describe('Portfolio REST API Integration Tests', () => {
     const res = await request(app).get('/api/projects')
     expect(res.status).toBe(200)
     expect(Array.isArray(res.body)).toBe(true)
-    expect(res.body.length).toBe(3)
-    expect(res.body[0].title).toBe('Japanese Shrine Environment')
+    expect(res.body.length).toBe(12)
+    expect(res.body[0].title).toBe('Mystic Spatial Portal (UE5)')
   })
 
   it('GET /api/projects/:id returns single project', async () => {
-    const res = await request(app).get('/api/projects/japanese-shrine-environment')
+    const res = await request(app).get('/api/projects/portal-ue5')
     expect(res.status).toBe(200)
-    expect(res.body.id).toBe('japanese-shrine-environment')
+    expect(res.body.id).toBe('portal-ue5')
   })
 
   it('GET /api/projects/:id returns 404 for unknown project', async () => {

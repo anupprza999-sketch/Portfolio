@@ -7,11 +7,14 @@ import { errorHandler } from './middleware/errorHandler.js'
 const app = express()
 const port = env.PORT
 
-app.use(cors({ origin: env.FRONTEND_ORIGIN }))
+import path from 'path'
+
+app.use(express.static(path.resolve(__dirname, '../../frontend/dist')));
 app.use(express.json())
 
-app.use('/api', apiRouter)
-app.use(errorHandler)
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../../frontend/dist/index.html'))
+})
 
 export default app
 

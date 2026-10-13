@@ -1,32 +1,36 @@
 import { useEffect, useRef } from 'react'
-import { gsap, ScrollTrigger } from '../animations/gsap'
+import { gsap } from '../animations/gsap'
+import { initSmoothScroll } from '../utils/smoothScroll'
 
 export function useScrollAnimation() {
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    // Check reduced motion preference
+    // 1. Initialize Lenis silky smooth momentum scrolling
+    initSmoothScroll()
+
+    // 2. Check reduced motion preference
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (prefersReducedMotion) return
 
     const ctx = gsap.context(() => {
-      // Reveal sections on scroll with subtle staggered translation
+      // Reveal sections on scroll with smooth staggered translation that STAYS visible
       const sections = gsap.utils.toArray<HTMLElement>('section:not(#hero)')
 
       sections.forEach((section) => {
         gsap.fromTo(
           section,
-          { opacity: 0, y: 40 },
+          { opacity: 0, y: 36 },
           {
             opacity: 1,
             y: 0,
-            duration: 0.9,
+            duration: 0.85,
             ease: 'power2.out',
             scrollTrigger: {
               trigger: section,
-              start: 'top 82%',
-              end: 'top 40%',
-              toggleActions: 'play none none reverse'
+              start: 'top 85%',
+              // Keep elements visible once entered; do NOT reverse or stop animations on scroll
+              once: true,
             }
           }
         )
@@ -35,11 +39,11 @@ export function useScrollAnimation() {
       // Hero text entrance animation
       gsap.fromTo(
         '#hero-content',
-        { opacity: 0, y: 30 },
+        { opacity: 0, y: 24 },
         {
           opacity: 1,
           y: 0,
-          duration: 1.2,
+          duration: 1.0,
           ease: 'power3.out',
           delay: 0.1
         }
@@ -48,7 +52,6 @@ export function useScrollAnimation() {
 
     return () => {
       ctx.revert()
-      ScrollTrigger.getAll().forEach((t) => t.kill())
     }
   }, [])
 
