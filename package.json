@@ -6,6 +6,9 @@
     "frontend",
     "backend"
   ],
+  "overrides": {
+    "typescript": "^5.8.2"
+  },
   "scripts": {
     "dev": "npm --prefix frontend run dev",
     "dev:frontend": "npm --prefix frontend run dev",
